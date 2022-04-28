@@ -1,11 +1,20 @@
 #! /usr/bin/env node
-const chalk = require("chalk");
-const clear = require("clear");
-const figlet = require("figlet");
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
-const { askUserforCredentials } = require("./lib/inquirer");
-const {connect} =require("./lib/login")
+// import chalk from "chalk"
+// const clear = require("clear");
+// const figlet = require("figlet");
+// const yargs = require("yargs/yargs");
+// const { hideBin } = require("yargs/helpers");
+// const { askUserforCredentials } = require("./lib/inquirer");
+// const { connect } = require("./lib/connect");
+// const { exec } = require("child_process");
+import chalk from "chalk";
+import clear from "clear";
+import figlet from "figlet";
+import yargs from "yargs";
+import hideBin from "yargs";
+import askUserforCredentials from "./lib/inquirer.js";
+import connect from "./lib/connect.js";
+
 clear();
 
 console.log(
@@ -13,34 +22,20 @@ console.log(
 );
 
 const login = async () => {
-  const keys = await askUserforCredentials();
-  const response = await connect();
-  
-}
+  const keys = await askUserforCredentials.askUserforCredentials();
+  const response = await connect.connect(keys);
+  //console.log(response);
+  clear();
+  if (response) {
+    console.log("salesforce org is connected");
+  }
+};
 
+const run = async () => {};
 
-const argv = yargs(hideBin(process.argv)).argv;
-console.log(argv);
+const argv = yargs(process.argv).argv;
+//console.log(argv);
 if (argv.connect) {
- 
-  if (options.connect) {
-//   console.log("connect here");
-// }
-
-// const { exec } = require("child_process");
-// exec(
-//   "sfdx auth:web:login --instanceurl https://test.salesforce.com",
-//   (err, stdout, stderr) => {
-//     if (err) {
-//       // node couldn't execute the command
-
-//       console.log(err);
-//       return;
-//     }
-
-//     // the *entire* stdout and stderr (buffered)
-
-//     console.log(`stdout: ${stdout}`);
-//     console.log(`stderr: ${stderr}`);
-//   }
-//);
+  console.log("connect");
+  login();
+}
