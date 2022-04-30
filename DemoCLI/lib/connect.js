@@ -1,13 +1,19 @@
-//var axios = require("axios");
-// express = require("express");
-// const open = require("open");
-// const qs = require("qs");
-// const httpTerminator = require("http-terminator");
 import axios from "axios";
 import express from "express";
 import open from "open";
 import qs from "qs";
 import { createHttpTerminator } from "http-terminator";
+import keytar from "keytar";
+
+const SERVICE_NAME = "salesforceCLI";
+const LOCAL_SERVER = "http://localhost:3000/";
+
+const CLIENT_ID = "apiurl";
+const SECRET_CODE = "apikey";
+const REFRESH_TOKEN = "refreshtoken";
+const ACCESS_TOKEN = "authtoken";
+const INSTANCE_URL = "instanceurl";
+const REDIRECT_URI = "redirecturi";
 
 process.send = process.send || function () {};
 
@@ -25,7 +31,6 @@ const connect = async (keys) => {
       let options = {
         redirect_uri: "http://localhost:3000/authorize",
         client_id: keys.clientId,
-        scope: "api",
         response_type: "code",
       };
       const url =
@@ -45,20 +50,25 @@ const connect = async (keys) => {
         client_id: keys.clientId,
         client_secret: keys.secretCode,
         grant_type: "authorization_code",
-        redirect_uri: "http://localhost:3000/authorize",
+        redirect_uri: LOCAL_SERVER + "authorize",
       };
 
       const apiCall = axios
         .post(
-          "https://login.salesforce.com/services/oauth2/token?" +
-            qs.stringify(queryParams)
+          instanceUrl + "/services/oauth2/token?" + qs.stringify(queryParams)
         )
         .then(function (response) {
+          console.log(response.data);
           accessToken = response.data.access_token;
-          //console.log(accessToken);
-
+          const refreshToken = response.data.refresh_token;
+          instanceUrl = response.data.instance_url;
+          keytar.setPassword(SERVICE_NAME, CLIENT_ID, keys.clientId);
+          keytar.setPassword(SERVICE_NAME, SECRET_CODE, keys.secretCode);
+          keytar.setPassword(SERVICE_NAME, ACCESS_TOKEN, accessToken);
+          keytar.setPassword(SERVICE_NAME, INSTANCE_URL, instanceUrl);
+          keytar.setPassword(SERVICE_NAME, REFRESH_TOKEN, refreshToken);
           httpTerminator.terminate();
-          resolve(accessToken);
+          resolve({ accessToken, instanceUrl, refreshToken });
         })
         .catch(function (error) {
           console.log(error);
@@ -70,7 +80,7 @@ const connect = async (keys) => {
 
     const server = app.listen(3000, "localhost", function () {
       //console.log("Listening on 3000");
-      open("http://localhost:3000");
+      open(LOCAL_SERVER);
     });
 
     httpTerminator = createHttpTerminator({
