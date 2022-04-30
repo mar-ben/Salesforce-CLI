@@ -1,5 +1,6 @@
 import jsforce from "jsforce";
 import keytar from "keytar";
+import { Parser } from "json2csv";
 
 const SERVICE_NAME = "salesforceCLI";
 
@@ -48,6 +49,7 @@ const execute = (query, accessKeys) => {
         reject(err);
       }
       resolve(result);
+
       console.log("total : " + result.totalSize);
       console.log("fetched : " + result.records.length);
     });

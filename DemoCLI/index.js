@@ -9,6 +9,7 @@ import connect from "./lib/connect.js";
 import jsforce from "jsforce";
 import query from "./lib/query.js";
 import keytar from "keytar";
+
 //clear();
 
 const API_URL = "apiurl";
@@ -36,7 +37,10 @@ const runQuery = async () => {
     const keys = await query.getAccessKeys();
     //console.log(keys);
     const response = await query.execute("select id from account", keys);
-    console.log("query response" + response);
+    console.log("query response" + JSON.stringify(response));
+    const csv = parser.parse(response.records);
+    console.log(csv);
+    //console.log(Parser(result));
   } catch (err) {
     console.log(err);
   }
