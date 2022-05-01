@@ -1,13 +1,12 @@
 import jsforce from "jsforce";
 import keytar from "keytar";
-import { Parser } from "json2csv";
 
 const SERVICE_NAME = "salesforceCLI";
 
-const CLIENT_ID = "apiurl";
-const SECRET_CODE = "apikey";
+const CLIENT_ID = "clientid";
+const SECRET_CODE = "secretcode";
 const REFRESH_TOKEN = "refreshtoken";
-const ACCESS_TOKEN = "authtoken";
+const ACCESS_TOKEN = "accesstoken";
 const INSTANCE_URL = "instanceurl";
 const REDIRECT_URI = "redirecturi";
 
@@ -28,9 +27,9 @@ const getAccessKeys = () => {
 };
 
 const execute = (query, accessKeys) => {
-  console.log("inside execute");
+  //console.log("inside execute");
   return new Promise((resolve, reject) => {
-    console.log("making connection");
+    // console.log("making connection");
     var conn = new jsforce.Connection({
       oauth2: {
         clientId: accessKeys.clientId,
@@ -49,9 +48,6 @@ const execute = (query, accessKeys) => {
         reject(err);
       }
       resolve(result);
-
-      console.log("total : " + result.totalSize);
-      console.log("fetched : " + result.records.length);
     });
   });
 };

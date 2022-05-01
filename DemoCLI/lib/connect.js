@@ -8,10 +8,10 @@ import keytar from "keytar";
 const SERVICE_NAME = "salesforceCLI";
 const LOCAL_SERVER = "http://localhost:3000/";
 
-const CLIENT_ID = "apiurl";
-const SECRET_CODE = "apikey";
+const CLIENT_ID = "clientid";
+const SECRET_CODE = "secretcode";
 const REFRESH_TOKEN = "refreshtoken";
-const ACCESS_TOKEN = "authtoken";
+const ACCESS_TOKEN = "accesstoken";
 const INSTANCE_URL = "instanceurl";
 const REDIRECT_URI = "redirecturi";
 

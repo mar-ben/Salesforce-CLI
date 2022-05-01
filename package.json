@@ -3,6 +3,7 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "json-2-csv": "^3.17.1",
     "keytar": "^7.9.0"
   }
 }

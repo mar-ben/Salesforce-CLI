@@ -9,7 +9,7 @@ import connect from "./lib/connect.js";
 import jsforce from "jsforce";
 import query from "./lib/query.js";
 import keytar from "keytar";
-
+import csv from "./lib/csv.js";
 //clear();
 
 const API_URL = "apiurl";
@@ -32,15 +32,17 @@ const login = async () => {
   }
 };
 
-const runQuery = async () => {
+const executeQuery = async (soql, fileName) => {
   try {
     const keys = await query.getAccessKeys();
-    //console.log(keys);
-    const response = await query.execute("select id from account", keys);
-    console.log("query response" + JSON.stringify(response));
-    const csv = parser.parse(response.records);
-    console.log(csv);
-    //console.log(Parser(result));
+    const result = await query.execute(soql, keys);
+    //console.log("query result");
+    //console.log(JSON.stringify(result));
+    console.log("total records :" + result.totalSize);
+    result.records.forEach((item) => {
+      delete item.attributes;
+    });
+    csv.csv(result.records, fileName);
   } catch (err) {
     console.log(err);
   }
@@ -54,7 +56,17 @@ if (argv2 == "connect") {
 }
 
 if (argv2 == "query") {
-  runQuery();
+  const soql = argv.soql;
+  const fileName = argv.file;
+  if (!soql) {
+    console.log("Please input soql");
+    process.exit(0);
+  }
+  if (!fileName) {
+    console.log("please input fileName");
+    process.exit(0);
+  }
+  executeQuery(soql, fileName);
 }
 // const argv = yargs(process.argv).argv;
 // console.log(argv);
