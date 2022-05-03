@@ -8,6 +8,8 @@ import connect from "./lib/connect.js";
 import query from "./lib/query.js";
 import csv from "./lib/csv.js";
 import insert from "./lib/insert.js";
+import update from "./lib/update.js";
+import upsert from "./lib/upsert.js";
 clear();
 
 const API_URL = "apiurl";
@@ -78,6 +80,51 @@ if (argv2 == "insert") {
     process.exit(0);
   }
   insert.insertRecords(object, file);
+}
+if (argv2 == "update") {
+  const object = argv.object;
+  const file = argv.file;
+  if (!file) {
+    console.log("Please input fileName");
+    process.exit(0);
+  }
+  if (!object) {
+    console.log("Please input object API Name");
+    process.exit(0);
+  }
+  update.updateRecords(object, file);
+}
+if (argv2 == "update") {
+  const object = argv.object;
+  const file = argv.file;
+  if (!file) {
+    console.log("Please input fileName");
+    process.exit(0);
+  }
+  if (!object) {
+    console.log("Please input object API Name");
+    process.exit(0);
+  }
+  update.updateRecords(object, file);
+}
+
+if (argv2 == "upsert") {
+  const object = argv.object;
+  const file = argv.file;
+  const extId = argv.extId;
+  if (!file) {
+    console.log("Please input file");
+    process.exit(0);
+  }
+  if (!object) {
+    console.log("Please input object");
+    process.exit(0);
+  }
+  if (!extId) {
+    console.log("Please input  extId");
+    process.exit(0);
+  }
+  upsert.upsertRecords(object, file, extId);
 }
 // const argv = yargs(process.argv).argv;
 // console.log(argv);
