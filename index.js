@@ -3,14 +3,12 @@ import chalk from "chalk";
 import clear from "clear";
 import figlet from "figlet";
 import yargs from "yargs";
-import hideBin from "yargs";
 import askUserforCredentials from "./lib/inquirer.js";
 import connect from "./lib/connect.js";
-import jsforce from "jsforce";
 import query from "./lib/query.js";
-import keytar from "keytar";
 import csv from "./lib/csv.js";
-//clear();
+import insert from "./lib/insert.js";
+clear();
 
 const API_URL = "apiurl";
 const AUTH_KEY = "apikey";
@@ -34,8 +32,7 @@ const login = async () => {
 
 const executeQuery = async (soql, fileName) => {
   try {
-    const keys = await connect.getAccessKeys();
-    const result = await query.execute(soql, keys);
+    const result = await query.execute(soql);
     //console.log("query result");
     //console.log(JSON.stringify(result));
     console.log("total records :" + result.totalSize);
@@ -70,8 +67,17 @@ if (argv2 == "query") {
 }
 
 if (argv2 == "insert") {
-  const objectName = argv.objectName;
+  const object = argv.object;
   const file = argv.file;
+  if (!file) {
+    console.log("Please input fileName");
+    process.exit(0);
+  }
+  if (!object) {
+    console.log("Please input object API Name");
+    process.exit(0);
+  }
+  insert.insertRecords(object, file);
 }
 // const argv = yargs(process.argv).argv;
 // console.log(argv);

@@ -1,0 +1,3 @@
+salesforce query --soql="select id,name from account" --file="test1.csv"
+
+salesforce insert --object="Account" --file="test1.csv"
