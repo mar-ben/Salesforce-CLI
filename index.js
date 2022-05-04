@@ -39,7 +39,7 @@ const executeQuery = async (soql, fileName) => {
     const result = await query.execute(soql);
     //console.log("query result");
     //console.log(JSON.stringify(result));
-    console.log("total records :" + result.totalSize);
+    console.log("Total records :" + result.totalSize);
     result.records.forEach((item) => {
       delete item.attributes;
     });
