@@ -5,3 +5,6 @@ salesforce insert --object="Account" --file="test1.csv"
 salesforce update --object="Account" --file="test_update.csv"
 
 salesforce upsert --object="Account" --file="test_upsert.csv" --extId="Name"
+
+
+salesforce delete --object="Account" --file="test_delete.csv"

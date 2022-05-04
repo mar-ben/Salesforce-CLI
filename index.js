@@ -10,6 +10,8 @@ import csv from "./lib/csv.js";
 import insert from "./lib/insert.js";
 import update from "./lib/update.js";
 import upsert from "./lib/upsert.js";
+import del from "./lib/delete.js";
+import desc from "./lib/describe.js";
 clear();
 
 const API_URL = "apiurl";
@@ -108,6 +110,20 @@ if (argv2 == "update") {
   update.updateRecords(object, file);
 }
 
+if (argv2 == "delete") {
+  const object = argv.object;
+  const file = argv.file;
+  if (!file) {
+    console.log("Please input fileName");
+    process.exit(0);
+  }
+  if (!object) {
+    console.log("Please input object API Name");
+    process.exit(0);
+  }
+  del.deleteRecords(object, file);
+}
+
 if (argv2 == "upsert") {
   const object = argv.object;
   const file = argv.file;
@@ -125,6 +141,16 @@ if (argv2 == "upsert") {
     process.exit(0);
   }
   upsert.upsertRecords(object, file, extId);
+}
+
+if (argv2 == "desc") {
+  const object = argv.object;
+
+  if (!object) {
+    console.log("Please input object");
+    process.exit(0);
+  }
+  desc.describeObject(object);
 }
 // const argv = yargs(process.argv).argv;
 // console.log(argv);
